@@ -1,84 +1,90 @@
+// 1. Importaciones necesarias (Usando la versión que elegiste)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { 
+    getAuth, 
+    signInWithPopup, 
+    GoogleAuthProvider, 
+    onAuthStateChanged, 
+    signOut 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// CONFIGURACIÓN (Reemplaza con tus datos de Firebase Console)
+import { 
+    getFirestore, 
+    collection, 
+    addDoc, 
+    onSnapshot, 
+    query, 
+    orderBy 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// 2. Tu configuración (Mantenemos tus claves)
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_PROJECT.firebaseapp.com",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_PROJECT.appspot.com",
-  messagingSenderId: "TU_ID",
-  appId: "TU_APP_ID"
+    apiKey: "AIzaSyCEFmEHwAexwAPQlCe_R_zXoUKU1yA7XRU",
+    authDomain: "falta-uno-fc329.firebaseapp.com",
+    projectId: "falta-uno-fc329",
+    storageBucket: "falta-uno-fc329.firebasestorage.app",
+    messagingSenderId: "35076766299",
+    appId: "1:35076766299:web:8659e9c36def3c0e171d7e",
+    measurementId: "G-H1WSWSPG19"
 };
 
-// Inicializar Firebase
+// 3. Inicialización
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
-// ELEMENTOS DEL DOM
-const loginPage = document.getElementById('login-page');
-const mainApp = document.getElementById('main-app');
-const googleBtn = document.getElementById('google-login');
+// --- LÓGICA DE USUARIO ---
 
-// --- 1. AUTENTICACIÓN ---
-
-// Login con Google
-googleBtn.onclick = async () => {
+// Función para entrar con Google
+window.loginConGoogle = async () => {
     try {
-        await signInWithPopup(auth, provider);
+        const result = await signInWithPopup(auth, provider);
+        console.log("Usuario entró:", result.user.displayName);
     } catch (error) {
-        console.error("Error en Login:", error);
+        console.error("Error al entrar:", error);
+        alert("No se pudo iniciar sesión");
     }
 };
 
-// Observador de estado (Detecta si el usuario está logueado o no)
+// Función para salir
+window.cerrarSesion = () => {
+    signOut(auth);
+};
+
+// Escuchar si el usuario está adentro o afuera
 onAuthStateChanged(auth, (user) => {
+    const loginPage = document.getElementById('login-page');
+    const mainApp = document.getElementById('main-app');
+
     if (user) {
-        showSection(mainApp);
-        loadMatches();
+        // Usuario logueado
+        if(loginPage) loginPage.style.display = 'none';
+        if(mainApp) mainApp.style.display = 'block';
+        console.log("Bienvenido:", user.displayName);
     } else {
-        showSection(loginPage);
+        // Usuario fuera
+        if(loginPage) loginPage.style.display = 'block';
+        if(mainApp) mainApp.style.display = 'none';
     }
 });
 
-function logout() {
-    signOut(auth);
-}
+// --- LÓGICA DE PARTIDOS ---
 
-// Navegación fluida entre pantallas
-function showSection(section) {
-    document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active-section'));
-    section.classList.add('active-section');
-}
+// Función para crear un partido en la base de datos
+window.crearPartido = async () => {
+    const lugar = prompt("¿Dónde es el partido?");
+    if (!lugar) return;
 
-// --- 2. BASE DE DATOS (CRUD Partidos) ---
-
-async function loadMatches() {
-    const q = query(collection(db, "matches"), orderBy("date", "desc"));
-    
-    // Escuchar cambios en tiempo real
-    onSnapshot(q, (snapshot) => {
-        const container = document.getElementById('matches-container');
-        container.innerHTML = "";
-        
-        snapshot.forEach((doc) => {
-            const match = doc.data();
-            container.innerHTML += `
-                <div class="player-card animate__animated animate__fadeInUp">
-                    <div class="d-flex justify-content-between">
-                        <h6 class="mb-0">📍 ${match.location}</h6>
-                        <span class="badge bg-success">${match.playersNeeded} lugares</span>
-                    </div>
-                    <p class="small text-muted mb-0 mt-2">Organiza: ${match.organizer}</p>
-                    <button class="btn btn-outline-primary btn-sm mt-3 w-100">Sumarme</button>
-                </div>
-            `;
+    try {
+        await addDoc(collection(db, "partidos"), {
+            lugar: lugar,
+            organizador: auth.currentUser.displayName,
+            fecha: new Date().toLocaleString(),
+            timestamp: Date.now()
         });
-    });
-}
-
-// Exponer funciones al window para que el HTML las vea
-window.logout = logout;
+        alert("¡Partido creado!");
+    } catch (e) {
+        console.error("Error guardando partido: ", e);
+    }
+};
