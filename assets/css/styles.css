@@ -1,20 +1,89 @@
-        :root { --primary: #10b981; --dark-bg: #0f172a; --card-bg: #1e293b; }
-        body { font-family: 'Outfit', sans-serif; background-color: var(--dark-bg); color: white; overflow-x: hidden; }
-        
-        .glass-card { 
-            background: var(--card-bg); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        
-        .btn-google { background: white; color: #444; border-radius: 12px; font-weight: 600; transition: 0.3s; }
-        .btn-primary-custom { background: var(--primary); border: none; border-radius: 12px; font-weight: 600; padding: 12px; }
-        
-        /* Ocultar secciones inicialmente */
-        .page-section { display: none; }
-        .active-section { display: block; }
+:root {
+    --primary: #10b981;
+    --dark-bg: #0f172a;
+    --card-bg: #1e293b;
+    --text-main: #f8fafc;
+}
 
-        .player-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 15px; padding: 15px; margin-bottom: 15px;
-            border-left: 4px solid var(--primary);
-        }
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+/* Efecto Vidrio */
+.glass-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* INPUTS: Texto Blanco y Bordes */
+.form-control, .form-select {
+    background: #0f172a !important;
+    border: 1px solid #334155 !important;
+    color: white !important; /* Texto que escribe el usuario */
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.form-control:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+    color: white !important;
+}
+
+/* Botones */
+.btn-primary-custom {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    padding: 12px;
+    transition: 0.3s;
+}
+
+.btn-primary-custom:hover {
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+/* Tarjetas de Partidos */
+.player-card {
+    background: #1e293b;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-left: 5px solid var(--primary);
+    transition: 0.3s;
+}
+
+.profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    object-fit: cover;
+}
+
+/* Separador */
+.hr-text {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+.hr-text::before, .hr-text::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #334155;
+}
+.hr-text:not(:empty)::before { margin-right: .5em; }
+.hr-text:not(:empty)::after { margin-left: .5em; }
