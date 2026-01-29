@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Falta Uno | Armá tu partido</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+    <div id="login-page" class="page-section active-section animate__animated animate__fadeIn">
+        <div class="container d-flex align-items-center justify-content-center vh-100">
+            <div class="glass-card p-5 text-center shadow-lg" style="max-width: 400px; width: 100%;">
+                <h1 class="fw-800 mb-2">⚽ Falta Uno</h1>
+                <p class="text-muted mb-4">La red social de los picaditos.</p>
+                
+                <button id="google-login" class="btn btn-google w-100 mb-3 d-flex align-items-center justify-content-center gap-2">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_发展_Logo.svg" width="20" alt="Google">
+                    Entrar con Google
+                </button>
+                
+                <div class="hr-text text-muted small mb-3">O con tu correo</div>
+                <input type="email" id="email" class="form-control mb-2 bg-dark text-white border-secondary" placeholder="Email">
+                <input type="password" id="pass" class="form-control mb-3 bg-dark text-white border-secondary" placeholder="Contraseña">
+                <button onclick="emailLogin()" class="btn btn-primary-custom w-100">Ingresar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-app" class="page-section animate__animated animate__fadeInRight">
+        <nav class="navbar sticky-top bg-dark border-bottom border-secondary p-3">
+            <div class="container d-flex justify-content-between">
+                <span class="fw-bold">Falta Uno</span>
+                <button onclick="logout()" class="btn btn-sm btn-outline-danger">Salir</button>
+            </div>
+        </nav>
+
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4>Partidos Cerca</h4>
+                <button class="btn btn-success btn-sm" onclick="showAddMatchModal()">+ Crear</button>
+            </div>
+            
+            <div id="matches-container">
+                </div>
+        </div>
+    </div>
+
+    <script type="module" src="/assets/js/app.js"></script>
+</body>
+</html>
