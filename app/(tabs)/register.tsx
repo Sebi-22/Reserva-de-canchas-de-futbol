@@ -1,51 +1,57 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { 
+  StyleSheet, Text, View, TextInput, TouchableOpacity, 
+  ScrollView, KeyboardAvoidingView, Platform 
+} from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function RegisterScreen() {
   const router = useRouter();
   
-  // Estados para cada dato pedido
-  const [nombre, setNombre] = useState('');
-  const [apellido, setApellido] = useState('');
-  const [edad, setEdad] = useState('');
-  const [club, setClub] = useState('');
-  const [posicion, setPosicion] = useState('');
-  const [barrio, setBarrio] = useState('');
+  const [form, setForm] = useState({
+    nombre: '',
+    apellido: '',
+    edad: '',
+    club: '',
+    posicion: '',
+    barrio: ''
+  });
 
   const handleRegister = () => {
-    if (nombre && apellido && club) {
-      alert(`¡Bienvenido ${nombre}! Registro exitoso.`);
-      router.replace('/home'); // Lo manda al Home después de registrarse
+    if (form.nombre && form.club && form.posicion) {
+      // Pasamos TODO el objeto form como parámetros
+      router.replace({
+        pathname: '/home',
+        params: { ...form }
+      });
     } else {
-      alert("Por favor, completá los campos principales");
+      alert("Completá nombre, club y posición para seguir.");
     }
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-      style={{ flex: 1 }}
-    >
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>Ficha del Jugador 📝</Text>
-        <Text style={styles.subtitle}>Completá tu perfil para empezar a jugar</Text>
+        <Text style={styles.title}>Nueva Ficha 📋</Text>
+        <Text style={styles.subtitle}>Configurá tu perfil de jugador</Text>
 
         <View style={styles.inputGroup}>
-          <TextInput placeholder="Nombre" placeholderTextColor="#94a3b8" style={styles.input} onChangeText={setNombre} />
-          <TextInput placeholder="Apellido" placeholderTextColor="#94a3b8" style={styles.input} onChangeText={setApellido} />
-          <TextInput placeholder="Edad" placeholderTextColor="#94a3b8" style={styles.input} keyboardType="numeric" onChangeText={setEdad} />
-          <TextInput placeholder="Club del cual sos hincha" placeholderTextColor="#94a3b8" style={styles.input} onChangeText={setClub} />
-          <TextInput placeholder="Posición (Ej: Delantero, DFC)" placeholderTextColor="#94a3b8" style={styles.input} onChangeText={setPosicion} />
-          <TextInput placeholder="Barrio" placeholderTextColor="#94a3b8" style={styles.input} onChangeText={setBarrio} />
+          <TextInput placeholder="Nombre" placeholderTextColor="#94a3b8" style={styles.input} 
+            onChangeText={(t) => setForm({...form, nombre: t})} />
+          <TextInput placeholder="Apellido" placeholderTextColor="#94a3b8" style={styles.input} 
+            onChangeText={(t) => setForm({...form, apellido: t})} />
+          <TextInput placeholder="Edad" placeholderTextColor="#94a3b8" style={styles.input} keyboardType="numeric" 
+            onChangeText={(t) => setForm({...form, edad: t})} />
+          <TextInput placeholder="Club (Hincha de...)" placeholderTextColor="#94a3b8" style={styles.input} 
+            onChangeText={(t) => setForm({...form, club: t})} />
+          <TextInput placeholder="Posición" placeholderTextColor="#94a3b8" style={styles.input} 
+            onChangeText={(t) => setForm({...form, posicion: t})} />
+          <TextInput placeholder="Barrio" placeholderTextColor="#94a3b8" style={styles.input} 
+            onChangeText={(t) => setForm({...form, barrio: t})} />
         </View>
 
         <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>CREAR CUENTA</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => router.back()}>
-          <Text style={styles.linkText}>Volver al Login</Text>
+          <Text style={styles.buttonText}>REGISTRARSE</Text>
         </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -54,11 +60,10 @@ export default function RegisterScreen() {
 
 const styles = StyleSheet.create({
   container: { backgroundColor: '#0f172a', padding: 25, paddingTop: 60, flexGrow: 1 },
-  title: { color: '#fff', fontSize: 28, fontWeight: 'bold' },
+  title: { color: '#fff', fontSize: 32, fontWeight: 'bold' },
   subtitle: { color: '#94a3b8', fontSize: 16, marginBottom: 30 },
   inputGroup: { marginBottom: 20 },
-  input: { backgroundColor: '#1e293b', color: '#fff', padding: 15, borderRadius: 10, marginBottom: 12, fontSize: 16 },
-  button: { backgroundColor: '#22c55e', padding: 18, borderRadius: 12, alignItems: 'center' },
+  input: { backgroundColor: '#1e293b', color: '#fff', padding: 15, borderRadius: 12, marginBottom: 12, fontSize: 16, borderWidth: 1, borderColor: '#334155' },
+  button: { backgroundColor: '#22c55e', padding: 18, borderRadius: 12, alignItems: 'center', marginTop: 10 },
   buttonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
-  linkText: { color: '#94a3b8', textAlign: 'center', marginTop: 20, fontSize: 14 }
 });

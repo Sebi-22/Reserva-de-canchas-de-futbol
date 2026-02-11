@@ -1,35 +1,43 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
-
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Ionicons } from '@expo/vector-icons'; // Iconos que ya vienen en Expo
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+    <Tabs screenOptions={{
+      tabBarActiveTintColor: '#22c55e',
+      tabBarInactiveTintColor: '#94a3b8',
+      tabBarStyle: {
+        backgroundColor: '#1e293b',
+        borderTopColor: '#334155',
+        height: 60,
+        paddingBottom: 10,
+      },
+      headerShown: false, // Ocultamos el título de arriba para que sea más limpia
+    }}>
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Inicio',
+          tabBarIcon: ({ color }) => <Ionicons name="football" size={24} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="rating"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Puntuar',
+          tabBarIcon: ({ color }) => <Ionicons name="star" size={24} color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Perfil',
+          tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} />,
+        }}
+      />
+      {/* Ocultamos las pantallas que no queremos en el Navbar */}
+      <Tabs.Screen name="index" options={{ href: null }} />
+      <Tabs.Screen name="register" options={{ href: null }} />
     </Tabs>
   );
 }
